@@ -52,7 +52,7 @@ I enjoy figuring this out. I hope that sharing the real process, starting with a
 
 ## How to help
 
-You don't need to donate to contribute. Sharing the project, suggesting affordable hardware, identifying errors in the documentation, or contributing technical expertise can all help.
+You don't need to donate to contribute. Sharing the project, suggesting affordable hardware, identifying errors in the documentation, or contributing technical expertise can all help. See the [contribution guide](CONTRIBUTING.md) for practical ways to get involved and the current limitations.
 
 Financial support is **entirely optional**. I am building and using Jarvis personally, and the fundraising campaign helps cover potential hardware and testing costs as the project develops. Donations are not product purchases, investments, or guarantees of a release date. I intend to be transparent about what is planned, what has been bought, and what actually works.
 
