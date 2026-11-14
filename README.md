@@ -8,6 +8,20 @@ I wanted to pick up a conversation where I had left it. With Alexa, I often had 
 
 That's the problem I want to explore with Jarvis. If I say, “We already tried that on the Packard Bell, and here's what happened,” I want that experience to count the next time I ask for help. Saving the conversation is the first step. Using the right part of it at the right moment is the harder one.
 
+## A bigger goal: Jarvis for everyone
+
+Jarvis started as my personal home assistant, but I would like this project to help other people build their own. The long-term vision is to publish a reproducible, affordable, privacy-conscious home assistant built with accessible hardware and clearly documented software.
+
+What matters to me:
+
+- **Accessible hardware:** explore second-hand and low-cost machines, not only premium systems.
+- **Reproducible learning:** document decisions, mistakes, tests, backups, and installation steps so others can learn from them.
+- **Realistic privacy:** explain which services run at home and which still depend on external providers or paid APIs.
+- **Community participation:** welcome useful ideas, reviews, testing, and documentation contributions.
+- **A future open-source release:** prepare a safe-to-share codebase, choose a license, and publish installation instructions when ready.
+
+**Current status:** this public repository is a development journal, **not yet a downloadable open-source product or finished installer**. A software license has not been selected. Today, the assistant uses an external OpenAI API for responses and transcription; a fully local AI option is a possible future direction, not a completed feature.
+
 ## Progress update
 
 **November 5–10, 2026:** persistent conversations, backup and restore tests, browser voice input, local Piper voices, a public project page, a successful printer test, and the first Home Assistant setup.
@@ -36,5 +50,13 @@ I started this project without experience building servers or voice assistants. 
 
 I enjoy figuring this out. I hope that sharing the real process, starting with a discarded computer and a spare stick of RAM, makes this technology easier for someone else to understand, use, and enjoy.
 
-[Support the next hardware upgrade on GoFundMe](https://gofund.me/778e57dbd)
+## How to help
+
+You don't need to donate to contribute. Sharing the project, suggesting affordable hardware, identifying errors in the documentation, or contributing technical expertise can all help.
+
+Financial support is **entirely optional**. I am building and using Jarvis personally, and the fundraising campaign helps cover potential hardware and testing costs as the project develops. Donations are not product purchases, investments, or guarantees of a release date. I intend to be transparent about what is planned, what has been bought, and what actually works.
+
+[Support the project on GoFundMe](https://gofund.me/778e57dbd)
+
+
 
