@@ -1,0 +1,157 @@
+
+name: Jarvis Daily Updates to Discord
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/daily-logs/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jarvis-daily-discord
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Publish new daily logs
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_DAILY_WEBHOOK_URL }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          import urllib.request
+          import urllib.error
+          from pathlib import Path
+
+          webhook = os.environ.get("DISCORD_WEBHOOK", "")
+          event = os.environ["EVENT_NAME"]
+          repository = os.environ["REPOSITORY"]
+
+          if not webhook.startswith("https://discord.com/api/webhooks/"):
+              raise SystemExit("Discord webhook secret missing or invalid.")
+
+          def publish(title, description, link=None):
+              embed = {
+                  "title": title,
+                  "description": description[:3500],
+                  "color": 0x00CFA5,
+                  "footer": {
+                      "text": "Jarvis Homelab | Public technical documentation"
+                  }
+              }
+              if link:
+                  embed["url"] = link
+
+              payload = {
+                  "username": "Jarvis Daily Updates",
+                  "allowed_mentions": {"parse": []},
+                  "embeds": [embed]
+              }
+
+              request = urllib.request.Request(
+                  webhook,
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST"
+              )
+
+              try:
+                  with urllib.request.urlopen(request, timeout=20) as response:
+                      if response.status not in (200, 204):
+                          raise SystemExit("Unexpected Discord response.")
+              except urllib.error.HTTPError as exc:
+                  raise SystemExit(
+                      f"Discord returned HTTP {exc.code}."
+                  )
+              except urllib.error.URLError:
+                  raise SystemExit("Could not connect to Discord.")
+
+          if event == "workflow_dispatch":
+              publish(
+                  "Jarvis Daily Updates | Connection Test",
+                  "✅ GitHub Actions is connected to Discord.\n\n"
+                  "Future newly published daily technical logs will "
+                  "appear in this channel automatically."
+              )
+              print("Discord connection test sent.")
+              raise SystemExit(0)
+
+          before = os.environ.get("BEFORE_SHA", "")
+          after = os.environ["CURRENT_SHA"]
+
+          if not before or set(before) == {"0"}:
+              print("No comparison commit; skipping.")
+              raise SystemExit(0)
+
+          changed = subprocess.check_output(
+              [
+                  "git", "diff", "--name-only", "--diff-filter=A",
+                  before, after, "--", "docs/daily-logs/"
+              ],
+              text=True
+          ).splitlines()
+
+          for filename in changed:
+              path = Path(filename)
+
+              if path.parent.as_posix() != "docs/daily-logs":
+                  continue
+              if not re.fullmatch(r"\d{4}-\d{2}-\d{2}\.md", path.name):
+                  continue
+
+              content = path.read_text(encoding="utf-8")
+              bullets = []
+              in_completed = False
+
+              for line in content.splitlines():
+                  if line.startswith("## "):
+                      in_completed = "work completed" in line.lower()
+                  elif in_completed and line.startswith(("- ", "* ")):
+                      item = re.sub(r"\s+", " ", line[2:].strip())
+                      bullets.append(item[:300])
+                      if len(bullets) == 4:
+                          break
+
+              if bullets:
+                  summary = "\n\n".join("• " + item for item in bullets)
+              else:
+                  summary = "A new technical log is available on GitHub."
+
+              url = (
+                  f"https://github.com/{repository}/blob/main/"
+                  f"{filename}"
+              )
+
+              publish(
+                  f"Jarvis Daily Update | {path.stem}",
+                  "**Highlights from the published log:**\n\n"
+                  + summary
+                  + "\n\n[Read the full technical log](" + url + ")",
+                  url
+              )
+
+              print(f"Published daily update: {path.name}")
+
+          if not changed:
+              print("No newly created daily logs to publish.")
+          PY
