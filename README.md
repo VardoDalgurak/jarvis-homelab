@@ -1,5 +1,7 @@
 # Jarvis Homelab
 
+[![Discord](https://img.shields.io/badge/DISCORD-JOIN%20OUR%20COMMUNITY-00CFA5?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ZCU5w9s4HF)
+
 I found a Packard Bell PC in the trash. It was dirty and missing a few components. I took it home, cleaned it, and fitted a stick of RAM I already had. That rescued computer is now the server for Jarvis, the personal assistant I'm building at home.
 
 ## Why I started
@@ -49,6 +51,10 @@ This repository is a public development journal. It is not yet a complete source
 I started this project without experience building servers or voice assistants. I'm working with **OpenAI's GPT-6 Astra in Codex** as a step-by-step guide. It helps me choose the next step and understand the errors. I run the commands on the actual machine, test the result, and tell it when what I see differs from what we expected. I couldn't have brought Jarvis this far on my own.
 
 I enjoy figuring this out. I hope that sharing the real process, starting with a discarded computer and a spare stick of RAM, makes this technology easier for someone else to understand, use, and enjoy.
+
+## Join the Jarvis community
+
+[Join Dalgurak Hub on Discord](https://discord.gg/ZCU5w9s4HF) to follow daily development updates, share ideas, and discuss Jarvis with the community. New members are welcomed and verified before accessing the project channels.
 
 ## How to help
 
